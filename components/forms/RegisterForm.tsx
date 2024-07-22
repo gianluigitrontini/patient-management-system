@@ -12,10 +12,11 @@ import { UserFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
 import { createUser } from "@/lib/actions/patient.actions";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { Doctors, genderOptions } from "@/constants";
+import { Doctors, IdentificationTypes, genderOptions } from "@/constants";
 import { Label } from "../ui/label";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
+import FileUploader from "../FileUploader";
 
 export default function RegisterForm({ user }: { user: User }) {
   const router = useRouter();
@@ -200,6 +201,100 @@ export default function RegisterForm({ user }: { user: User }) {
             ))}
           </CustomFormField>
         </div>
+
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomFormField
+            control={form.control}
+            fieldType={FormFieldType.INPUT}
+            name="insuranceProvider"
+            label="Compagnia Assicurativa"
+            placeholder="EuroFree"
+          />
+
+          <CustomFormField
+            control={form.control}
+            fieldType={FormFieldType.INPUT}
+            name="insurancePolicyNumber"
+            label="Insurance Policy Number"
+            placeholder="ABC123456789"
+          />
+        </div>
+
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomFormField
+            control={form.control}
+            fieldType={FormFieldType.TEXTAREA}
+            name="allergies"
+            label="Allergie (se presenti)"
+            placeholder="Arachidi..."
+          />
+
+          <CustomFormField
+            control={form.control}
+            fieldType={FormFieldType.TEXTAREA}
+            name="currentMedication"
+            label="Medicazioni in corso (se presenti)"
+            placeholder="Ibuprofene 200mg..."
+          />
+        </div>
+
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomFormField
+            control={form.control}
+            fieldType={FormFieldType.TEXTAREA}
+            name="familyMedicalHistory"
+            label="Storico Medico Familiare"
+            placeholder="Mother had..."
+          />
+
+          <CustomFormField
+            control={form.control}
+            fieldType={FormFieldType.TEXTAREA}
+            name="pastMedicalHistory"
+            label="Storico Medico"
+            placeholder="Had surgery... / Tonsillectomy..."
+          />
+        </div>
+
+        <section className="space-y-4">
+          <div className="mb-9 space-y-1">
+            <h1 className="header">Identificazione e Verifica</h1>
+          </div>
+        </section>
+
+        <CustomFormField
+          control={form.control}
+          fieldType={FormFieldType.SELECT}
+          name="identificationType"
+          label="Tipo di Documento"
+          placeholder="Seleziona un documento..."
+        >
+          {IdentificationTypes.map((id) => (
+            <SelectItem key={id} value={id}>
+              {id}
+            </SelectItem>
+          ))}
+        </CustomFormField>
+
+        <CustomFormField
+          control={form.control}
+          fieldType={FormFieldType.INPUT}
+          name="identificationNumber"
+          label="Numero di Documento"
+          placeholder="es: AB12345CD"
+        />
+
+        <CustomFormField
+          control={form.control}
+          fieldType={FormFieldType.SKELETON}
+          name="identificationDocument"
+          label="Scansione Documento"
+          renderSkeleton={(field) => (
+            <FormControl>
+              <FileUploader files={field.value} onChange={field.onChange} />
+            </FormControl>
+          )}
+        />
 
         <SubmitButton isLoading={isLoading}>Prenota ora</SubmitButton>
       </form>

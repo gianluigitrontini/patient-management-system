@@ -20,6 +20,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { render } from "react-dom";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
+import { Textarea } from "./ui/textarea";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -77,6 +78,30 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
               placeholder={placeholder}
               {...field}
               className="shad-input border-0"
+            />
+          </FormControl>
+        </div>
+      );
+
+    case FormFieldType.TEXTAREA:
+      return (
+        <div className="flex items-center rounded-md border border-dark-500 bg-dark-400">
+          {iconSrc && (
+            <Image
+              className="m-2 mr-0"
+              src={iconSrc}
+              alt={iconAlt || "icon"}
+              height={24}
+              width={24}
+            />
+          )}
+
+          <FormControl>
+            <Textarea
+              placeholder={placeholder}
+              {...field}
+              className="shad-textArea border-0"
+              disabled={props.disabled}
             />
           </FormControl>
         </div>
