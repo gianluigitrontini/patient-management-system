@@ -215,7 +215,7 @@ export default function RegisterForm({ user }: { user: User }) {
             control={form.control}
             fieldType={FormFieldType.INPUT}
             name="insurancePolicyNumber"
-            label="Insurance Policy Number"
+            label="Numero di Polizza"
             placeholder="ABC123456789"
           />
         </div>
@@ -242,17 +242,17 @@ export default function RegisterForm({ user }: { user: User }) {
           <CustomFormField
             control={form.control}
             fieldType={FormFieldType.TEXTAREA}
-            name="familyMedicalHistory"
-            label="Storico Medico Familiare"
-            placeholder="Mother had..."
+            name="pastMedicalHistory"
+            label="Storico Medico"
+            placeholder="Ho avuto un intervento... / Tonsillite..."
           />
 
           <CustomFormField
             control={form.control}
             fieldType={FormFieldType.TEXTAREA}
-            name="pastMedicalHistory"
-            label="Storico Medico"
-            placeholder="Had surgery... / Tonsillectomy..."
+            name="familyMedicalHistory"
+            label="Storico Medico Familiare"
+            placeholder="Un mio parente vicino ha..."
           />
         </div>
 
@@ -294,6 +294,33 @@ export default function RegisterForm({ user }: { user: User }) {
               <FileUploader files={field.value} onChange={field.onChange} />
             </FormControl>
           )}
+        />
+
+        <section className="space-y-4">
+          <div className="mb-9 space-y-1">
+            <h1 className="header">Consensi e Privacy</h1>
+          </div>
+        </section>
+
+        <CustomFormField
+          control={form.control}
+          fieldType={FormFieldType.CHECKBOX}
+          name="treatmentConsent"
+          label="Acconsento al trattamento dei dati personali"
+        />
+
+        <CustomFormField
+          control={form.control}
+          fieldType={FormFieldType.CHECKBOX}
+          name="disclosureConsent"
+          label="Acconsento alla condivisione dei dati con il medico per fini medici"
+        />
+
+        <CustomFormField
+          control={form.control}
+          fieldType={FormFieldType.CHECKBOX}
+          name="privacyConsent"
+          label="Confermo di aver letto e accettato i termini e le condizioni d'uso"
         />
 
         <SubmitButton isLoading={isLoading}>Prenota ora</SubmitButton>
