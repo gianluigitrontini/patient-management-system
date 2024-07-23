@@ -63,7 +63,7 @@ export default function RegisterForm({ user }: { user: User }) {
       // @ts-ignore
       const patient = await registerPatient(patientData);
 
-      patient && router.push(`/patients/${patient.$id}/new-appointment`);
+      patient && router.push(`/patients/${user.$id}/new-appointment`);
     } catch (error) {
       console.error(error);
     } finally {

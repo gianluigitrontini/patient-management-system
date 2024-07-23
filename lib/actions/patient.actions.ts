@@ -11,6 +11,7 @@ import {
 
 import { parseStringify } from "../utils";
 import { InputFile } from "node-appwrite/file"
+import { Patient } from "@/types/appwrite.types";
 
 
 export const createUser = async (user: CreateUserParams) => {
@@ -73,5 +74,20 @@ export const registerPatient = async ({ identificationDocument, ...patient }: Re
     } catch (error: any) {
         console.log(error)
     }
+}
 
+export const getPatient = async (userId: string) => {
+    try {
+        const patients = await databases.listDocuments(
+            DATABASE_ID!,
+            PATIENT_COLLECTION_ID!,
+            [
+                Query.equal('userId', userId)
+            ]
+        );
+
+        return parseStringify(patients?.documents[0]) as Patient
+    } catch (error: any) {
+        console.log(error)
+    }
 }
