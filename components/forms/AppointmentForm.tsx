@@ -41,7 +41,9 @@ export default function AppointmentForm({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
       primaryPhysician: appointment?.primaryPhysician || "",
-      schedule: new Date(appointment?.schedule) || new Date(),
+      schedule: appointment?.schedule
+        ? new Date(appointment?.schedule)
+        : new Date(),
       reason: appointment?.reason || "",
       note: appointment?.note || "",
       cancellationReason: appointment?.cancellationReason || "",
