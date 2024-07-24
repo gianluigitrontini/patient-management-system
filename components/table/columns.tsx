@@ -1,22 +1,12 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "../ui/button";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import { Appointment } from "@/types/appwrite.types";
-import StatusBadge from "../StatusBadge";
-import { formatDateTime } from "@/lib/utils";
 import { Doctors } from "@/constants";
+import { formatDateTime } from "@/lib/utils";
+import { Appointment } from "@/types/appwrite.types";
+import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import AppointmentModal from "../AppointmentModal";
+import StatusBadge from "../StatusBadge";
 
 export const columns: ColumnDef<Appointment>[] = [
   {
@@ -25,14 +15,14 @@ export const columns: ColumnDef<Appointment>[] = [
   },
   {
     accessorKey: "patient",
-    header: "Patient",
+    header: "Paziente",
     cell: ({ row }) => (
       <p className="text-14-medium">{row.original.patient.name}</p>
     ),
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: "Stato",
     cell: ({ row }) => (
       <div className="min-w-[115px]">
         <StatusBadge status={row.original.status} />
@@ -41,7 +31,7 @@ export const columns: ColumnDef<Appointment>[] = [
   },
   {
     accessorKey: "schedule",
-    header: "Appointment",
+    header: "Appuntamento",
     cell: ({ row }) => (
       <p className="text-14-regular min-w-[100px]">
         {formatDateTime(row.original.schedule).dateTime}
@@ -50,7 +40,7 @@ export const columns: ColumnDef<Appointment>[] = [
   },
   {
     accessorKey: "primaryPhysician",
-    header: () => "Doctor",
+    header: () => "Medico",
     cell: ({ row }) => {
       const doctor = Doctors.find(
         (doctor) => doctor.name === row.original.primaryPhysician
@@ -71,7 +61,7 @@ export const columns: ColumnDef<Appointment>[] = [
   },
   {
     id: "actions",
-    header: () => <p className="pl-4">Actions</p>,
+    header: () => <p className="pl-4">Azioni</p>,
     cell: ({ row: { original: data } }) => {
       return (
         <div className="flex gap-1">
