@@ -5,31 +5,32 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
-import { createUser } from "@/lib/actions/patient.actions";
+import { Doctors } from "@/constants";
 import {
-  CreateAppointmentSchema,
-  ScheduleAppointmentSchema,
-  UserFormValidation,
-  getAppointmentSchema,
-} from "@/lib/validation";
+  createAppointment,
+  updateAppointment,
+} from "@/lib/actions/appointment.actions";
+import { getAppointmentSchema } from "@/lib/validation";
+import { Appointment } from "@/types/appwrite.types";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { SelectItem } from "../ui/select";
-import Image from "next/image";
-import { Doctors } from "@/constants";
-import { BriefcaseMedical } from "lucide-react";
-import { createAppointment } from "@/lib/actions/appointment.actions";
 
 export default function AppointmentForm({
   userId,
   patientId,
   type,
+  appointment,
+  setOpen,
 }: {
   userId: string;
   patientId: string;
   type: "create" | "cancel" | "schedule";
+  appointment: Appointment;
+  setOpen: (open: boolean) => void;
 }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -39,11 +40,11 @@ export default function AppointmentForm({
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
-      primaryPhysician: "",
-      schedule: new Date(),
-      reason: "",
-      note: "",
-      cancellationReason: "",
+      primaryPhysician: appointment?.primaryPhysician || "",
+      schedule: appointment?.schedule || new Date(),
+      reason: appointment?.reason || "",
+      note: appointment?.note || "",
+      cancellationReason: appointment?.cancellationReason || "",
     },
   });
 
@@ -86,6 +87,25 @@ export default function AppointmentForm({
             `/patients/${userId}/new-appointment/success?appointmentId=${appointment.$id}`
           );
         }
+      } else {
+        const appointmentToUpdate = {
+          userId,
+          appointmentId: appointment.$id,
+          appointment: {
+            primaryPhysician: values.primaryPhysician,
+            schedule: new Date(values.schedule),
+            status: status as Status,
+            cancellationReason: values.cancellationReason,
+          },
+          type,
+        };
+
+        const updatedAppointment = await updateAppointment(appointmentToUpdate);
+
+        if (updatedAppointment) {
+          setOpen && setOpen(false);
+          form.reset();
+        }
       }
     } catch (error) {
       console.error(error);
@@ -112,10 +132,12 @@ export default function AppointmentForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex-1">
-        <section>
-          <h1 className="header">Nuovo Appuntamento</h1>
-          <p className="text-dark-700">Richiedi un nuovo appuntamento</p>
-        </section>
+        {type === "create" && (
+          <section>
+            <h1 className="header">Nuovo Appuntamento</h1>
+            <p className="text-dark-700">Richiedi un nuovo appuntamento</p>
+          </section>
+        )}
 
         {type !== "cancel" && (
           <>
