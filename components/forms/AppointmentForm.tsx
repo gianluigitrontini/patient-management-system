@@ -54,7 +54,7 @@ export default function AppointmentForm({
 
     switch (type) {
       case "cancel":
-        status = "canceled";
+        status = "cancelled";
         break;
       case "create":
         status = "pending";
